@@ -1,8 +1,9 @@
+import StepOneForm from "../StepOneForm/StepOneForm";
 
 const Home = () => {
     return (
         <div>
-            Home
+            <StepOneForm />
         </div>
     );
 };

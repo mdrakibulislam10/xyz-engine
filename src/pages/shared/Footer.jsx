@@ -1,8 +1,8 @@
 
 const Footer = () => {
     return (
-        <footer className="flex justify-center">
-            <p className="absolute bottom-4">Copyright &copy; 2023 - All Right Reserved By XYZ ENGINE.</p>
+        <footer className="mt-20">
+            <p className="text-center">Copyright &copy; 2023 - All Right Reserved By XYZ ENGINE.</p>
         </footer>
     );
 };
