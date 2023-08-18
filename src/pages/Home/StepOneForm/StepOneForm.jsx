@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const StepOneForm = () => {
     const [projectName, setProjectName] = useState("");
@@ -16,8 +16,8 @@ const StepOneForm = () => {
 
     return (
         <section className="mt-20">
-            <div className="w-full max-w-xs mx-auto">
-                <form className="bg-white shadow-xl border-2 rounded px-8 pt-6 pb-8 mb-4">
+            <div className="w-full max-w-xl mx-auto">
+                <div className="bg-white shadow-xl border-2 rounded px-8 pt-6 pb-8 mb-4">
 
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectName">
@@ -56,11 +56,23 @@ const StepOneForm = () => {
                     </div>
 
                     <div className="flex items-center justify-end mt-10">
-                        <Link to={"/step-two-form"} state={stateOneFromData}>
-                            <input className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline" type="submit" value="Next" />
-                        </Link>
+                        {
+                            !projectName || !description || !client || !contractor
+                                ?
+                                <button
+                                    title="Please fill in the input fields"
+                                    className="bg-blue-500 text-white cursor-not-allowed font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline"
+                                    onClick={() => Swal.fire('Please fill in the input fields')}
+                                >
+                                    Next
+                                </button>
+                                :
+                                <Link to={"/step-two-form"} state={stateOneFromData}>
+                                    <input className="bg-blue-500 hover:bg-blue-700 text-white cursor-pointer font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline" type="submit" value="Next" />
+                                </Link>
+                        }
                     </div>
-                </form>
+                </div>
             </div>
         </section>
     );
