@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import Papa from 'papaparse';
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const StepTwoForm = () => {
     const location = useLocation();
     const stepOneFormData = location.state;
-    const [csvData, setCsvData] = useState([]);
+    // const [csvData, setCsvData] = useState([]);
     const [minMaxValues, setMinMaxValues] = useState({});
 
     const projectName = stepOneFormData.projectName;
@@ -30,8 +31,6 @@ const StepTwoForm = () => {
                 const zValues = data.map(row => parseFloat(row.Z));
 
                 // console.log(xValues);
-                // console.log(yValues);
-                // console.log(zValues);
 
                 if (xValues.includes(NaN) || yValues.includes(NaN) || zValues.includes(NaN)) {
                     console.error('NaN values detected in extracted data.');
@@ -49,7 +48,7 @@ const StepTwoForm = () => {
 
                 // console.log(newMinMaxValues);
 
-                setCsvData(data);
+                // setCsvData(data);
                 setMinMaxValues(newMinMaxValues);
             },
             error: error => {
@@ -68,7 +67,7 @@ const StepTwoForm = () => {
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="projectName">
                             Project Name:
                         </label>
-                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="projectName" type="text" required name="projectName" placeholder="Project Name"
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="projectName" type="text" name="projectName" placeholder="Project Name"
                             defaultValue={projectName}
                             readOnly
                         />
@@ -78,7 +77,7 @@ const StepTwoForm = () => {
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
                             Project Description:
                         </label>
-                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="description" type="text" required name="description" placeholder="Project Description"
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="description" type="text" name="description" placeholder="Project Description"
                             defaultValue={description}
                             readOnly
                         />
@@ -88,7 +87,7 @@ const StepTwoForm = () => {
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="client">
                             Client:
                         </label>
-                        <input className="shadow appearance-none border rounded w-full text-gray-500 font-semibold py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" id="client" type="text" required name="client" placeholder="Client"
+                        <input className="shadow appearance-none border rounded w-full text-gray-500 font-semibold py-2 px-3 leading-tight focus:outline-none focus:shadow-outline" id="client" type="text" name="client" placeholder="Client"
                             defaultValue={client}
                             readOnly
                         />
@@ -98,14 +97,14 @@ const StepTwoForm = () => {
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contractor">
                             Contractor:
                         </label>
-                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="contractor" type="text" required placeholder="Contractor"
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="contractor" type="text" placeholder="Contractor"
                             defaultValue={contractor}
                             readOnly
                         />
                     </div>
 
                     <div className="mb-4 mt-10">
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contractor">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="csv">
                             Upload CSV File:
                         </label>
                         <input
@@ -113,13 +112,89 @@ const StepTwoForm = () => {
                             accept=".csv"
                             className="py-2 px-4 rounded-lg mb-4 w-full border-2 shadow-sm"
                             onChange={handleCSVUpload}
+                            id="csv"
+                            name="csv"
+                            required
+                        />
+                    </div>
+
+                    {/* Max-Min Values Input Field */}
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="max-x">
+                            Max_X:
+                        </label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="max-x" type="number" placeholder="Max_X"
+                            value={minMaxValues.max_X}
+                        // readOnly
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="min-x">
+                            Min_X:
+                        </label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="min-x" type="number" placeholder="Min_X"
+                            value={minMaxValues.min_X}
+                        // readOnly
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="max-y">
+                            Max_Y:
+                        </label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="max-y" type="number" placeholder="Max_Y"
+                            value={minMaxValues.max_Y}
+                        // readOnly
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="min-y">
+                            Min_Y:
+                        </label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="min-y" type="number" placeholder="Min_Y"
+                            value={minMaxValues.min_Y}
+                        // readOnly
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="max-z">
+                            Max_Z:
+                        </label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="max-z" type="number" placeholder="Max_Z"
+                            value={minMaxValues.max_Z}
+                        // readOnly
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="min-z">
+                            Min_Z:
+                        </label>
+                        <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="min-z" type="number" placeholder="Min_Z"
+                            value={minMaxValues.min_Z}
+                        // readOnly
                         />
                     </div>
 
                     <div className="flex items-center justify-end mt-10">
-                        <Link to={"/step-two-form"} state={"stateOneFromData"}>
-                            <input className="bg-blue-500 hover:bg-blue-700 cursor-pointer text-white font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline" type="submit" value="View The Results" />
-                        </Link>
+                        {
+                            !minMaxValues.max_X || !minMaxValues.min_X || !minMaxValues.max_Y || !minMaxValues.min_Y || !minMaxValues.max_Z || !minMaxValues.min_Z
+                                ?
+                                <button
+                                    title="Please fill in the input fields"
+                                    className="bg-blue-500 text-white cursor-not-allowed font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline"
+                                    onClick={() => Swal.fire('Please Upload a .csv File')}
+                                >
+                                    View The Results
+                                </button>
+                                :
+                                <Link to={"/result"} state={"stateOneFromData"}>
+                                    <input className="bg-blue-500 hover:bg-blue-700 text-white cursor-pointer font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline" type="submit" value="View The Results" />
+                                </Link>
+                        }
                     </div>
                 </form>
             </div>
