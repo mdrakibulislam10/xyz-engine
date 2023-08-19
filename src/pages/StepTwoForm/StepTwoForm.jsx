@@ -3,7 +3,7 @@ import Papa from 'papaparse';
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { FaArrowRight } from "react-icons/fa";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 
 const StepTwoForm = () => {
     const location = useLocation();
@@ -21,8 +21,6 @@ const StepTwoForm = () => {
     const [processingComplete, setProcessingComplete] = useState(false);
 
     const [chartData, setChartData] = useState([]);
-    const [kpValues, setKpValues] = useState([]);
-    const [allXValue, setAllXValue] = useState([]);
 
     const projectName = stepOneFormData?.projectName;
     const description = stepOneFormData?.description;
@@ -47,7 +45,6 @@ const StepTwoForm = () => {
                 }));
                 setChartData(newChartData);
 
-                const kpValues = data.map(row => parseInt(row.KP));
                 const xValues = data.map(row => parseFloat(row.X));
                 const yValues = data.map(row => parseFloat(row.Y));
                 const zValues = data.map(row => parseFloat(row.Z));
@@ -66,12 +63,7 @@ const StepTwoForm = () => {
                     max_Z: Math.max(...zValues),
                     min_Z: Math.min(...zValues),
                 };
-
                 // console.log(newMinMaxValues);
-
-                const allXValue = xValues;
-                setAllXValue(allXValue);
-                setKpValues(kpValues);
 
                 // setCsvData(data);
                 setMinMaxValues(newMinMaxValues);
@@ -84,10 +76,6 @@ const StepTwoForm = () => {
             }
         });
     };
-
-    // console.log(chartData);
-    // console.log(kpValues);
-    // console.log(allXValue);
 
     return (
         <section className="mt-20 grid grid-cols-1 lg:grid-cols-2 gap-1">
