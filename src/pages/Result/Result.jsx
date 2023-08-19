@@ -1,6 +1,7 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useState } from "react";
+import { FaArrowCircleDown, FaDownload } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 const Result = () => {
@@ -44,7 +45,11 @@ const Result = () => {
                     onClick={downloadPDF}
                 >
                     {
-                        loader ? "Downloading" : "Download"
+                        loader
+                            ?
+                            <>Downloading <FaArrowCircleDown /></>
+                            :
+                            <>Download <FaDownload /></>
                     }
                 </button>
             </div>

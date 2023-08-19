@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { FaArrowRight } from "react-icons/fa";
 
 const StepOneForm = () => {
     const [projectName, setProjectName] = useState("");
@@ -61,14 +62,16 @@ const StepOneForm = () => {
                                 ?
                                 <button
                                     title="Please fill in the input fields"
-                                    className="bg-blue-500 text-white cursor-not-allowed font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline"
+                                    className="bg-blue-500 text-white cursor-not-allowed font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline flex items-center gap-1"
                                     onClick={() => Swal.fire('Please fill in the input fields')}
                                 >
-                                    Next
+                                    Next <FaArrowRight />
                                 </button>
                                 :
                                 <Link to={"/step-two-form"} state={stateOneFromData}>
-                                    <input className="bg-blue-500 hover:bg-blue-700 text-white cursor-pointer font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline" type="submit" value="Next" />
+                                    <button className="bg-blue-500 hover:bg-blue-700 text-white cursor-pointer font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline flex items-center gap-1" type="submit">
+                                        Next <FaArrowRight />
+                                    </button>
                                 </Link>
                         }
                     </div>

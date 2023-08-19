@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import Papa from 'papaparse';
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { FaArrowRight } from "react-icons/fa";
 
 const StepTwoForm = () => {
     const location = useLocation();
@@ -195,14 +196,16 @@ const StepTwoForm = () => {
                             !processingComplete ? (
                                 <button
                                     title="Please fill in the input fields"
-                                    className="bg-blue-500 text-white cursor-not-allowed font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline"
+                                    className="bg-blue-500 text-white cursor-not-allowed font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline flex items-center gap-1"
                                     onClick={() => Swal.fire('Please Upload a .csv File')}
                                 >
-                                    View The Results
+                                    View The Results <FaArrowRight />
                                 </button>
                             ) : (
                                 <Link to={"/result"} state={minMaxValues && { ...stepOneFormData, ...minMaxValues }}>
-                                    <input className="bg-blue-500 hover:bg-blue-700 text-white cursor-pointer font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline" type="submit" value="View The Results" />
+                                    <button className="bg-blue-500 hover:bg-blue-700 text-white cursor-pointer font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline flex items-center gap-1" type="submit">
+                                        View The Results <FaArrowRight />
+                                    </button>
                                 </Link>
                             )
                         }
