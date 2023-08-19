@@ -6,13 +6,23 @@ import Swal from "sweetalert2";
 const StepTwoForm = () => {
     const location = useLocation();
     const stepOneFormData = location.state;
-    // const [csvData, setCsvData] = useState([]);
-    const [minMaxValues, setMinMaxValues] = useState({});
 
-    const projectName = stepOneFormData.projectName;
-    const description = stepOneFormData.description;
-    const client = stepOneFormData.client;
-    const contractor = stepOneFormData.contractor;
+    // const [csvData, setCsvData] = useState([]);
+    const [minMaxValues, setMinMaxValues] = useState({
+        max_X: "",
+        min_X: "",
+        max_Y: "",
+        min_Y: "",
+        max_Z: "",
+        min_Z: "",
+    });
+    const [processingComplete, setProcessingComplete] = useState(false);
+
+
+    const projectName = stepOneFormData?.projectName;
+    const description = stepOneFormData?.description;
+    const client = stepOneFormData?.client;
+    const contractor = stepOneFormData?.contractor;
     // console.log(projectName);
 
     const handleCSVUpload = e => {
@@ -29,7 +39,6 @@ const StepTwoForm = () => {
                 const xValues = data.map(row => parseFloat(row.X));
                 const yValues = data.map(row => parseFloat(row.Y));
                 const zValues = data.map(row => parseFloat(row.Z));
-
                 // console.log(xValues);
 
                 if (xValues.includes(NaN) || yValues.includes(NaN) || zValues.includes(NaN)) {
@@ -50,6 +59,9 @@ const StepTwoForm = () => {
 
                 // setCsvData(data);
                 setMinMaxValues(newMinMaxValues);
+
+                setProcessingComplete(true);
+
             },
             error: error => {
                 console.error('CSV Parsing Error:', error);
@@ -57,7 +69,6 @@ const StepTwoForm = () => {
         });
     };
 
-    console.log(minMaxValues);
     return (
         <section className="mt-20">
             <div className="w-full max-w-xl mx-auto">
@@ -124,7 +135,7 @@ const StepTwoForm = () => {
                             Max_X:
                         </label>
                         <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="max-x" type="number" placeholder="Max_X"
-                            value={minMaxValues.max_X}
+                            defaultValue={minMaxValues.max_X}
                         // readOnly
                         />
                     </div>
@@ -134,7 +145,7 @@ const StepTwoForm = () => {
                             Min_X:
                         </label>
                         <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="min-x" type="number" placeholder="Min_X"
-                            value={minMaxValues.min_X}
+                            defaultValue={minMaxValues.min_X}
                         // readOnly
                         />
                     </div>
@@ -144,7 +155,7 @@ const StepTwoForm = () => {
                             Max_Y:
                         </label>
                         <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="max-y" type="number" placeholder="Max_Y"
-                            value={minMaxValues.max_Y}
+                            defaultValue={minMaxValues.max_Y}
                         // readOnly
                         />
                     </div>
@@ -154,7 +165,7 @@ const StepTwoForm = () => {
                             Min_Y:
                         </label>
                         <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="min-y" type="number" placeholder="Min_Y"
-                            value={minMaxValues.min_Y}
+                            defaultValue={minMaxValues.min_Y}
                         // readOnly
                         />
                     </div>
@@ -164,7 +175,7 @@ const StepTwoForm = () => {
                             Max_Z:
                         </label>
                         <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="max-z" type="number" placeholder="Max_Z"
-                            value={minMaxValues.max_Z}
+                            defaultValue={minMaxValues.max_Z}
                         // readOnly
                         />
                     </div>
@@ -174,15 +185,14 @@ const StepTwoForm = () => {
                             Min_Z:
                         </label>
                         <input className="shadow appearance-none border rounded w-full py-2 px-3 font-semibold leading-tight focus:outline-none focus:shadow-outline" id="min-z" type="number" placeholder="Min_Z"
-                            value={minMaxValues.min_Z}
+                            defaultValue={minMaxValues.min_Z}
                         // readOnly
                         />
                     </div>
 
                     <div className="flex items-center justify-end mt-10">
                         {
-                            !minMaxValues.max_X || !minMaxValues.min_X || !minMaxValues.max_Y || !minMaxValues.min_Y || !minMaxValues.max_Z || !minMaxValues.min_Z
-                                ?
+                            !processingComplete ? (
                                 <button
                                     title="Please fill in the input fields"
                                     className="bg-blue-500 text-white cursor-not-allowed font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline"
@@ -190,10 +200,11 @@ const StepTwoForm = () => {
                                 >
                                     View The Results
                                 </button>
-                                :
-                                <Link to={"/result"} state={"stateOneFromData"}>
+                            ) : (
+                                <Link to={"/result"} state={minMaxValues && { ...stepOneFormData, ...minMaxValues }}>
                                     <input className="bg-blue-500 hover:bg-blue-700 text-white cursor-pointer font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline" type="submit" value="View The Results" />
                                 </Link>
+                            )
                         }
                     </div>
                 </form>
