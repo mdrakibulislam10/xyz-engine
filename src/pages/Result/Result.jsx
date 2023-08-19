@@ -38,7 +38,7 @@ const Result = () => {
 
 
     return (
-        <div className="mt-10 h-screen">
+        <div className="mt-10 mb-80">
             <div className="flex justify-end">
                 <button className="btn bg-sky-600 hover:bg-sky-700 text-white font-semibold"
                     disabled={!(loader === false)}
